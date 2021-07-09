@@ -1,20 +1,13 @@
+import exceptions.NoSuchActionException;
+
 public class Main {
     public static void main(String[] args) {
         Parcel parcel = new Parcel();
-        int pointsGained = parcel.playNextTurn("PLANTA");
-        String turnInformation;
-        switch (pointsGained) {
-            case Parcel.INVALID_PLANT:{
-                turnInformation = "INVALID OR MISSING TYPE OF PLANT";
-                break;
-            }
-            case Parcel.INVALID_ACTION: {
-                turnInformation = "INVALID ACTION";
-                break;
-            }
-            default:
-                turnInformation = String.format("TURN DONE SUCCESSFULLY AND EARNED %d POINTS\n%s", pointsGained, parcel);
+        try {
+            int pointsGained = parcel.playNextTurn("PLANTA");
+            System.out.printf("TURN DONE SUCCESSFULLY AND EARNED %d POINTS\n%s%n", pointsGained, parcel);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        System.out.println(turnInformation);
     }
 }

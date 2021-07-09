@@ -1,3 +1,5 @@
+import exceptions.NoSuchActionException;
+import exceptions.NoSuchPlantTypeException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +28,7 @@ public class Parcel {
         this.soilQuality = MAX_SOIL_QUALITY;
     }
 
-    public int playNextTurn(String action) {
+    public int playNextTurn(String action) throws NoSuchActionException, NoSuchPlantTypeException {
         int pointsEarned = 0;
         if (action != null) {
             pointsEarned = playAction(action);
@@ -38,7 +40,7 @@ public class Parcel {
         return pointsEarned;
     }
 
-    private int playAction(String action) {
+    private int playAction(String action) throws NoSuchActionException, NoSuchPlantTypeException {
         int pointsEarned = 0;
         if (action.equals("FERTILIZE")) {
             pointsEarned = fertilize();
@@ -47,7 +49,7 @@ public class Parcel {
         } else if (action.startsWith("PLANT")) {
             pointsEarned = plant(action);
         } else {
-            return INVALID_ACTION;
+            throw new NoSuchActionException();
         }
         return pointsEarned;
     }
@@ -66,14 +68,14 @@ public class Parcel {
         return pointsEarned;
     }
 
-    private int plant(String action) {
+    private int plant(String action) throws NoSuchPlantTypeException {
         if (!hasPlant()) {
             String chosenPlantType = action.substring(5);
             if (chosenPlantType.equals("A") || chosenPlantType.equals("B")) {
                 plantType = chosenPlantType.charAt(0);
                 plant = 0;
             } else {
-                return INVALID_PLANT;
+                throw new NoSuchPlantTypeException();
             }
         }
         return 0;

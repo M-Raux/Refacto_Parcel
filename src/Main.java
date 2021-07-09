@@ -1,19 +1,19 @@
 public class Main {
     public static void main(String[] args) {
-        Thing t = new Thing();
-        int ret = t.nextTurn("PLANT");
+        Parcel parcel = new Parcel();
+        int pointsGained = parcel.playNextTurn("PLANT");
         String turnInformation;
-        switch (ret) {
-            case -1:{
+        switch (pointsGained) {
+            case Parcel.INVALID_PLANT:{
                 turnInformation = "INVALID OR MISSING TYPE OF PLANT";
                 break;
             }
-            case -2: {
+            case Parcel.INVALID_ACTION: {
                 turnInformation = "INVALID ACTION";
                 break;
             }
             default:
-                turnInformation = String.format("TURN DONE SUCCESSFULLY AND EARNED %d POINTS\n%s", ret, t);
+                turnInformation = String.format("TURN DONE SUCCESSFULLY AND EARNED %d POINTS\n%s", pointsGained, parcel);
         }
         System.out.println(turnInformation);
     }

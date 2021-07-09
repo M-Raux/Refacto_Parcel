@@ -68,8 +68,9 @@ public class Parcel {
 
     private int plant(String action) {
         if (!hasPlant()) {
-            if (action.length() > 5 && "AB".indexOf(action.charAt(5)) != -1) {
-                plantType = action.charAt(5);
+            String chosenPlantType = action.substring(5);
+            if (chosenPlantType.equals("A") || chosenPlantType.equals("B")) {
+                plantType = chosenPlantType.charAt(0);
                 plant = 0;
             } else {
                 return INVALID_PLANT;

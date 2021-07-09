@@ -14,7 +14,7 @@ public class Parcel {
     private static final int PLANT_AGE_TO_BE_READY_TO_HARVEST = 10;
     private static final int PLANT_LIFESPAN = 11;
 
-    public static final int INVALID_PLANT = -1;
+    public static final int INVALID_PLANT_ERROR = -1;
     public static final int INVALID_ACTION = -2;
 
     private int plant;
@@ -73,10 +73,22 @@ public class Parcel {
                 plantType = chosenPlantType.charAt(0);
                 plant = 0;
             } else {
-                return INVALID_PLANT;
+                return INVALID_PLANT_ERROR;
             }
         }
         return 0;
+    }
+
+    private int getPlantValue() {
+        int plantValue = 0;
+        if (plantIsReady()) {
+            if (plantType == 'A') {
+                plantValue = TYPE_A_HARVEST_GAIN;
+            } else if (plantType == 'B') {
+                plantValue = TYPE_B_HARVEST_GAIN;
+            }
+        }
+        return plantValue;
     }
 
     private void alterSoilQualityFromPlant() {
@@ -95,20 +107,10 @@ public class Parcel {
     }
 
     private void killPlant() {
-        plant = 110;
+        plant = PLANT_LIFESPAN;
     }
 
-    private int getPlantValue() {
-        int plantValue = 0;
-        if (plantIsReady()) {
-            if (plantType == 'A') {
-                plantValue = TYPE_A_HARVEST_GAIN;
-            } else if (plantType == 'B') {
-                plantValue = TYPE_B_HARVEST_GAIN;
-            }
-        }
-        return plantValue;
-    }
+
 
     private boolean plantIsReady() {
         return plant >= PLANT_AGE_TO_BE_READY_TO_HARVEST && plant <= PLANT_LIFESPAN;

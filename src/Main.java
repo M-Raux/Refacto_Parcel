@@ -4,7 +4,7 @@ public class Main {
         int pointsGained = parcel.playNextTurn("PLANTA");
         String turnInformation;
         switch (pointsGained) {
-            case Parcel.INVALID_PLANT:{
+            case Parcel.INVALID_PLANT_ERROR:{
                 turnInformation = "INVALID OR MISSING TYPE OF PLANT";
                 break;
             }

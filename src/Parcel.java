@@ -17,58 +17,108 @@ public class Parcel {
     public static final int INVALID_PLANT = -1;
     public static final int INVALID_ACTION = -2;
 
-
-
     private int plant;
     private char plantType;
     private int soilQuality;
 
     public Parcel() {
         this.plant = -1;
-        this.soilQuality = 1000;
+        this.soilQuality = MAX_SOIL_QUALITY;
     }
 
     public int playNextTurn(String action) {
         int pointsEarned = 0;
         if (action != null) {
-            if (action.equals("FERTILIZE")) {
-                soilQuality = Math.min(MAX_SOIL_QUALITY, soilQuality + FERTILIZER_BONUS);
-            } else if (action.equals("HARVEST")) {
-                if (plant != NO_PLANT_VALUE) {
-                    if (plant >= PLANT_AGE_TO_BE_READY_TO_HARVEST && plant <= PLANT_LIFESPAN) {
-                        if (plantType == 'A') {
-                            pointsEarned = TYPE_A_HARVEST_GAIN;
-                        } else if (plantType == 'B') {
-                            pointsEarned = TYPE_B_HARVEST_GAIN;
-                        }
-                    }
-                    plant = NO_PLANT_VALUE;
-                }
-            } else if (action.startsWith("PLANT")) {
-                if (plant == NO_PLANT_VALUE) {
-                    if (action.length() > 5 && "AB".indexOf(action.charAt(5)) != -1) {
-                        plantType = action.charAt(5);
-                        plant = 0;
-                    } else {
-                        return INVALID_PLANT;
-                    }
-                }
-            } else {
-                return INVALID_ACTION;
-            }
+            pointsEarned = playAction(action);
         }
-        if (plant >= 0) {
-            plant++;
-            if (plantType == 'A') {
-                soilQuality = Math.max(0, soilQuality - TYPE_A_NUTRIENT_NEED);
-            } else if (plantType == 'B') {
-                soilQuality = Math.max(0, soilQuality - TYPE_B_NUTRIENT_NEED);
-            }
-            if (soilQuality == 0) {
-                plant = 110;
-            }
+        if (hasPlant()) {
+            growPlant();
+            alterSoilQualityFromPlant();
         }
         return pointsEarned;
+    }
+
+    private int playAction(String action) {
+        int pointsEarned = 0;
+        if (action.equals("FERTILIZE")) {
+            pointsEarned = fertilize();
+        } else if (action.equals("HARVEST")) {
+            pointsEarned = harvest();
+        } else if (action.startsWith("PLANT")) {
+            pointsEarned = plant(action);
+        } else {
+            return INVALID_ACTION;
+        }
+        return pointsEarned;
+    }
+
+    private int fertilize() {
+        soilQuality = Math.min(MAX_SOIL_QUALITY, soilQuality + FERTILIZER_BONUS);
+        return 0;
+    }
+
+    private int harvest() {
+        int pointsEarned = 0;
+        if (hasPlant()) {
+            pointsEarned = getPlantValue();
+            removePlant();
+        }
+        return pointsEarned;
+    }
+
+    private int plant(String action) {
+        if (!hasPlant()) {
+            if (action.length() > 5 && "AB".indexOf(action.charAt(5)) != -1) {
+                plantType = action.charAt(5);
+                plant = 0;
+            } else {
+                return INVALID_PLANT;
+            }
+        }
+        return 0;
+    }
+
+    private void alterSoilQualityFromPlant() {
+        if (plantType == 'A') {
+            soilQuality = Math.max(0, soilQuality - TYPE_A_NUTRIENT_NEED);
+        } else if (plantType == 'B') {
+            soilQuality = Math.max(0, soilQuality - TYPE_B_NUTRIENT_NEED);
+        }
+        if (soilQuality == 0) {
+            killPlant();
+        }
+    }
+
+    private void growPlant() {
+        plant++;
+    }
+
+    private void killPlant() {
+        plant = 110;
+    }
+
+    private int getPlantValue() {
+        int plantValue = 0;
+        if (plantIsReady()) {
+            if (plantType == 'A') {
+                plantValue = TYPE_A_HARVEST_GAIN;
+            } else if (plantType == 'B') {
+                plantValue = TYPE_B_HARVEST_GAIN;
+            }
+        }
+        return plantValue;
+    }
+
+    private boolean plantIsReady() {
+        return plant >= PLANT_AGE_TO_BE_READY_TO_HARVEST && plant <= PLANT_LIFESPAN;
+    }
+
+    private boolean hasPlant() {
+        return plant != NO_PLANT_VALUE;
+    }
+
+    private void removePlant() {
+        plant = NO_PLANT_VALUE;
     }
 
     @Override

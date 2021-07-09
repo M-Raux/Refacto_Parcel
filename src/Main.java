@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args) {
         Parcel parcel = new Parcel();
-        int pointsGained = parcel.playNextTurn("PLANT");
+        int pointsGained = parcel.playNextTurn("PLANTA");
         String turnInformation;
         switch (pointsGained) {
             case Parcel.INVALID_PLANT:{

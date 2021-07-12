@@ -1,8 +1,5 @@
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Arrays;
 
-@Getter
-@Setter
 public class Parcel {
     private static final int MAX_SOIL_QUALITY = 1000;
     private static final int FERTILIZER_BONUS = 300;
@@ -13,17 +10,19 @@ public class Parcel {
     private static final int TYPE_B_HARVEST_GAIN = 2;
     private static final int PLANT_AGE_TO_BE_READY_TO_HARVEST = 10;
     private static final int PLANT_LIFESPAN = 11;
+    private static final String[] PLANT_TYPES = {"A", "B"};
 
     public static final int INVALID_PLANT_ERROR = -1;
-    public static final int INVALID_ACTION = -2;
+    public static final int INVALID_ACTION_ERROR = -2;
 
     private int plant;
-    private char plantType;
+    private String plantType;
     private int soilQuality;
 
     public Parcel() {
-        this.plant = -1;
+        this.plant = NO_PLANT_VALUE;
         this.soilQuality = MAX_SOIL_QUALITY;
+        this.plantType = "";
     }
 
     public int playNextTurn(String action) {
@@ -45,9 +44,10 @@ public class Parcel {
         } else if (action.equals("HARVEST")) {
             pointsEarned = harvest();
         } else if (action.startsWith("PLANT")) {
-            pointsEarned = plant(action);
+            String chosenPlantType = action.substring(5);
+            pointsEarned = plant(chosenPlantType);
         } else {
-            return INVALID_ACTION;
+            return INVALID_ACTION_ERROR;
         }
         return pointsEarned;
     }
@@ -66,12 +66,11 @@ public class Parcel {
         return pointsEarned;
     }
 
-    private int plant(String action) {
+    private int plant(String chosenPlantType) {
         if (!hasPlant()) {
-            String chosenPlantType = action.substring(5);
-            if (chosenPlantType.equals("A") || chosenPlantType.equals("B")) {
-                plantType = chosenPlantType.charAt(0);
+            if (checkValidPlantType(chosenPlantType)) {
                 plant = 0;
+                plantType = chosenPlantType;
             } else {
                 return INVALID_PLANT_ERROR;
             }
@@ -79,12 +78,16 @@ public class Parcel {
         return 0;
     }
 
+    private boolean checkValidPlantType(String plantType) {
+        return Arrays.asList(PLANT_TYPES).contains(plantType);
+    }
+
     private int getPlantValue() {
         int plantValue = 0;
         if (plantIsReady()) {
-            if (plantType == 'A') {
+            if (plantType.equals("A")) {
                 plantValue = TYPE_A_HARVEST_GAIN;
-            } else if (plantType == 'B') {
+            } else if (plantType.equals("B")) {
                 plantValue = TYPE_B_HARVEST_GAIN;
             }
         }
@@ -92,9 +95,9 @@ public class Parcel {
     }
 
     private void alterSoilQualityFromPlant() {
-        if (plantType == 'A') {
+        if (plantType.equals("A")) {
             soilQuality = Math.max(0, soilQuality - TYPE_A_NUTRIENT_NEED);
-        } else if (plantType == 'B') {
+        } else if (plantType.equals("B")) {
             soilQuality = Math.max(0, soilQuality - TYPE_B_NUTRIENT_NEED);
         }
         if (soilQuality == 0) {
@@ -109,8 +112,6 @@ public class Parcel {
     private void killPlant() {
         plant = PLANT_LIFESPAN;
     }
-
-
 
     private boolean plantIsReady() {
         return plant >= PLANT_AGE_TO_BE_READY_TO_HARVEST && plant <= PLANT_LIFESPAN;

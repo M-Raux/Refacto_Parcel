@@ -56,7 +56,7 @@ public class Parcel {
             String chosenPlantType = action.substring(5);
             pointsEarned = plant(chosenPlantType);
         } else {
-            throw new NoSuchActionException();
+            throw new NoSuchActionException(action);
         }
         return pointsEarned;
     }
@@ -81,7 +81,7 @@ public class Parcel {
                 plantGrowth = 0;
                 plantType = chosenPlantType;
             } else {
-                throw new NoSuchPlantTypeException();
+                throw new NoSuchPlantTypeException(chosenPlantType);
             }
         }
         return 0;

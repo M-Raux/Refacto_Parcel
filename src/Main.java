@@ -8,7 +8,7 @@ public class Main {
             int pointsGained = parcel.playNextTurn(actionReceived);
             System.out.printf("TURN DONE SUCCESSFULLY AND EARNED %d POINTS\n%s", pointsGained, parcel);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

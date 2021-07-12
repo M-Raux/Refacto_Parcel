@@ -6,7 +6,7 @@ public class Main {
         String actionReceived = receiveAction();
         try {
             int pointsGained = parcel.playNextTurn(actionReceived);
-            System.out.printf("TURN DONE SUCCESSFULLY AND EARNED %d POINTS\n%s%n", pointsGained, parcel);
+            System.out.printf("TURN DONE SUCCESSFULLY AND EARNED %d POINTS\n%s", pointsGained, parcel);
         } catch (Exception e) {
             e.printStackTrace();
         }

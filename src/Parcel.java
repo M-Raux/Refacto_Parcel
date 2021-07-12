@@ -1,6 +1,8 @@
 import exceptions.NoSuchActionException;
 import exceptions.NoSuchPlantTypeException;
 
+import java.util.Arrays;
+
 public class Parcel {
     private static final int MAX_SOIL_QUALITY = 1000;
     private static final int FERTILIZER_BONUS = 300;
@@ -12,9 +14,6 @@ public class Parcel {
     private static final int PLANT_AGE_TO_BE_READY_TO_HARVEST = 10;
     private static final int PLANT_LIFESPAN = 11;
     private static final String[] PLANT_TYPES = {"A", "B"};
-
-    public static final int INVALID_PLANT_ERROR = -1;
-    public static final int INVALID_ACTION_ERROR = -2;
 
     private int plant;
     private String plantType;
@@ -67,7 +66,7 @@ public class Parcel {
         return pointsEarned;
     }
 
-    private int plant(String chosenPlantType) {
+    private int plant(String chosenPlantType) throws NoSuchPlantTypeException {
         if (!hasPlant()) {
             if (checkValidPlantType(chosenPlantType)) {
                 plant = 0;

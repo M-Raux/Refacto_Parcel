@@ -15,12 +15,12 @@ public class Parcel {
     public static final int INVALID_PLANT_ERROR = -1;
     public static final int INVALID_ACTION_ERROR = -2;
 
-    private int plant;
+    private int plantGrowth;
     private String plantType;
     private int soilQuality;
 
     public Parcel() {
-        this.plant = NO_PLANT_VALUE;
+        this.plantGrowth = NO_PLANT_VALUE;
         this.soilQuality = MAX_SOIL_QUALITY;
         this.plantType = "";
     }
@@ -76,7 +76,7 @@ public class Parcel {
     private int plant(String chosenPlantType) {
         if (!hasPlant()) {
             if (checkValidPlantType(chosenPlantType)) {
-                plant = 0;
+                plantGrowth = 0;
                 plantType = chosenPlantType;
             } else {
                 return INVALID_PLANT_ERROR;
@@ -110,29 +110,29 @@ public class Parcel {
     }
 
     private void growPlant() {
-        plant++;
+        plantGrowth++;
     }
 
     private void killPlant() {
-        plant = PLANT_LIFESPAN;
+        plantGrowth = PLANT_LIFESPAN;
     }
 
     private boolean plantIsReady() {
-        return plant >= PLANT_AGE_TO_BE_READY_TO_HARVEST && plant <= PLANT_LIFESPAN;
+        return plantGrowth >= PLANT_AGE_TO_BE_READY_TO_HARVEST && plantGrowth <= PLANT_LIFESPAN;
     }
 
     private boolean hasPlant() {
-        return plant != NO_PLANT_VALUE;
+        return plantGrowth != NO_PLANT_VALUE;
     }
 
     private void removePlant() {
-        plant = NO_PLANT_VALUE;
+        plantGrowth = NO_PLANT_VALUE;
     }
 
     @Override
     public String toString() {
         return "Parcel{" +
-                "plant=" + plant +
+                "plantGrowth=" + plantGrowth +
                 ", plantType=" + plantType +
                 ", soilQuality=" + soilQuality +
                 '}';

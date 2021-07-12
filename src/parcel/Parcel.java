@@ -1,7 +1,7 @@
-package Game;
+package parcel;
 
-import Game.exceptions.NoSuchActionException;
-import Game.exceptions.NoSuchPlantTypeException;
+import exceptions.NoSuchActionException;
+import exceptions.NoSuchPlantTypeException;
 
 import java.util.Arrays;
 
@@ -133,7 +133,7 @@ public class Parcel {
 
     @Override
     public String toString() {
-        return "Game.Parcel{" +
+        return "parcel.Parcel{" +
                 "plantGrowth=" + plantGrowth +
                 ", plantType=" + plantType +
                 ", soilQuality=" + soilQuality +

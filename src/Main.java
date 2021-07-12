@@ -1,4 +1,4 @@
-import Game.Parcel;
+import parcel.Parcel;
 
 public class Main {
     public static void main(String[] args) {

@@ -35,8 +35,15 @@ public class Parcel {
         if (hasPlant()) {
             growPlant();
             alterSoilQualityFromPlant();
+            if (hasBadSoilQuality()) {
+                killPlant();
+            }
         }
         return pointsEarned;
+    }
+
+    private boolean hasBadSoilQuality() {
+        return soilQuality == 0;
     }
 
     private int playAction(String action) throws NoSuchActionException, NoSuchPlantTypeException {
@@ -101,9 +108,6 @@ public class Parcel {
             soilQuality = Math.max(0, soilQuality - TYPE_A_NUTRIENT_NEED);
         } else if (plantType.equals("B")) {
             soilQuality = Math.max(0, soilQuality - TYPE_B_NUTRIENT_NEED);
-        }
-        if (soilQuality == 0) {
-            killPlant();
         }
     }
 

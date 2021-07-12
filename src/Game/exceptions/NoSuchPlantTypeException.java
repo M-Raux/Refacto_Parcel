@@ -1,4 +1,4 @@
-package exceptions;
+package Game.exceptions;
 
 public class NoSuchPlantTypeException extends Exception{
     @Override

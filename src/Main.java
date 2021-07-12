@@ -1,3 +1,5 @@
+import Game.Parcel;
+
 public class Main {
     public static void main(String[] args) {
         Parcel parcel = new Parcel();
